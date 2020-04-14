@@ -3,9 +3,11 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const hbs = require('hbs');
+const ejs = require('ejs');
+const geocode  = require('./geocode/geocode');
 const sha256 = require('sha256');
 const fs = require('fs');
+const getArray = require('./utils/readasArray')
 /*
     Username: w7pcpfou2D
         Database name: w7pcpfou2D
@@ -24,8 +26,7 @@ var database_auth = JSON.parse(auth_str);
 
 var app = express();
 
-hbs.registerPartials(__dirname + '/views/partials');
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public/images'));
 app.use(express.static(__dirname + '/public/css'));
@@ -40,8 +41,9 @@ app.use(session({
 }));
 
 app.get('/', (req, res) => {
+    console.log(req.headers);
     console.log('Entered /');
-	res.render('home.hbs',{
+	res.render('home.ejs',{
         user: 'Login',
         LoginOut: 'Signup',
         login_link: '/login'
@@ -51,7 +53,9 @@ app.get('/', (req, res) => {
 app.get('/login',(req,res) => {
     console.log('Entered login');
     if(req.session.loggedin != true) {
-        res.render('login.hbs');
+        res.render('login.ejs',{
+            error: ''
+        });
     } else {
         res.redirect('home');
     }
@@ -62,13 +66,16 @@ app.get('/signup',(req,res) => {
     if(req.session.loggedin) {
         req.session.loggedin = false;
         res.redirect('home');
+    } else {
+        res.render('signup.ejs',{
+            error: ''
+        });
     }
-    res.render('signup.hbs',{});
 });
 
 app.get('/forgot_password',(req,res) => {
     console.log('Entered forgot');
-    res.render('forgot_password.hbs',{
+    res.render('forgot_password.ejs',{
         error:''
     });
 })
@@ -77,14 +84,14 @@ app.get('/forgot_password',(req,res) => {
 app.post('/auth',(req,res) => {
     console.log("Entered auth");
     var username = req.body.user;
-    var password = sha256(req.body.pass);
+    var password = req.body.pass;//sha256(req.body.pass);
     console.log(username,password);
     if(username && password) {
         var connection = mysql.createConnection(database_auth);
         connection.connect((err) => {
             if(err) {
                 console.error('Error:',err.message);
-                res.render('login.hbs',{
+                res.render('login.ejs',{
                     error:'Server Unreachable'
                 });
             } else {
@@ -102,7 +109,7 @@ app.post('/auth',(req,res) => {
                         req.session.username = username;
                         res.redirect('/home');
                     } else {
-                        res.render('login.hbs',{
+                        res.render('login.ejs',{
                             error:'Server Unreachable'
                         });
                     }
@@ -117,7 +124,7 @@ app.post('/auth',(req,res) => {
             }
         });
     } else {
-        res.render('login.hbs',{
+        res.render('login.ejs',{
             error:'Username or password incorrect '
         });
     }
@@ -129,20 +136,20 @@ app.post('/signup',(req,res) => {
     var email = req.body.email;
 
     var password = req.body.pass;
-    var hashedPassword = sha256(password);
+    var hashedPassword = password; //sha256(password);
 
-    console.log(username,hasgedPassword,name,email,password);
+    console.log(username,hashedPassword,name,email,password);
     if(username.length < 8) {
-        res.render('signup.hbs',{
+        res.render('signup.ejs',{
             error:'Username : min 8 characters '
         });
     } else if(password.length < 8) {
-        res.render('signup.hbs',{
+        res.render('signup.ejs',{
             error:'Password : min 8 characters '
         });
     } else if(validateEmail(email) === false)
     {
-        res.render('signup.hbs',{
+        res.render('signup.ejs',{
             error:'not a valid email id'
         })
     } else {
@@ -150,7 +157,7 @@ app.post('/signup',(req,res) => {
         connection.connect((err) => {
             if(err) {
                 console.error('Error:',err.message);
-                res.render('signup.hbs',{
+                res.render('signup.ejs',{
                     error:'Server Unreachable'
                 });
             } else {
@@ -160,11 +167,11 @@ app.post('/signup',(req,res) => {
                 connection.query(query_prc,(err,results,fields) => {
                     console.log(results);
                     if(err) {
-                        res.render('signup.hbs',{
+                        res.render('signup.ejs',{
                             error:'Server Unreachable'
                         });
                     } if(results.length > 0) {
-                        res.render('signup.hbs',{
+                        res.render('signup.ejs',{
                             error: 'Username already exists'
                         });
                     } else {
@@ -197,18 +204,43 @@ app.post('/signup',(req,res) => {
 app.get('/home',(req,res) => {
     console.log("Enterd home",req.session.loggedin,req.session.username);
     if(req.session.loggedin) {
-        res.render('home.hbs',{
+        res.render('home.ejs',{
             user: req.session.username,
             LoginOut: 'Logout'
 
         })
     } else {
-        res.render('home.hbs',{
+        res.render('home.ejs',{
             user:'Login',
             LoginOut:'Signup',
             user_link: '/login'
         });
     }
 });
+/*
+app.get('/forgot_password',(req,res) => {
+    console.log('Entered forgot');
+    var rand = paseInt(Math.random()*10**6);
+    res.render('forgot_password.ejs',{
+        interface : Enter OTP;
+    })
+});*/
+
+app.get('/booking', (req,res) => {
+    console.log('booking get')
+    res.render('booking.ejs',{
+        booked: true
+    });
+})
+app.post('/booking', (req,res) => {
+    console.log('Entered booking');
+    var startLocation = req.body.startLocation;
+    var endLocation = req.body.endLocation;
+    var interval = req.body.time;
+    var cities = getArray.read(__dirname + '/files/cities.txt')
+    if(cities.includes)
+    console.log(startLocation,endLocation,interval);
+
+})
 
 app.listen(3000);

@@ -1,1 +1,3 @@
-document.getElementById("loginLink:").href = "/login";
+if(user) {
+    alert(error);
+}

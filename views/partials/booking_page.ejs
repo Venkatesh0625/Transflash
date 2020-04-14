@@ -1,0 +1,26 @@
+<h1 style="padding-bottom: 20px;">Bring a Thing</h1>
+<form class="form-horizontal" action='/booking' method='post'>
+    <div class="row">        
+        <label class="control-label col-lg-4"><h4>Start Location</h4></label>
+        <div class="col-lg-8">
+            <input type="text" id="start-location" name="startLocation" placeholder="" class="input-xlarge form-control" required>
+        </div>
+    </div>
+
+    <div class="row" style="padding: 45px 0px 10px 0px">        
+        <label class="control-label col-lg-4"><h4>End Location</h4></label>
+        <div class="col-lg-8">
+            <input type="text" id="start-location" name="endLocation" placeholder="" class="input-xlarge form-control" required>
+        </div>
+    </div>
+    
+    <div class="row" style="padding: 47px 0px 10px 0px">        
+        <label class="control-label col-lg-4"><h3>To bring ?</h3></label>
+        <div class="col-lg-8">
+            <input type="text" id="thing-to-bring" name="toBring" placeholder="" class="input-xlarge form-control" required>
+        </div>
+    </div>
+    <div class="container" style="padding: 20px 0px">
+        <input type="submit" name="submit" class="btn btn-success btn-lg">
+    </div>
+</form>

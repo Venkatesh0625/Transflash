@@ -12,6 +12,7 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "crypto": "^1.0.1",
+    "ejs": "^3.0.2",
     "email-existence": "^0.1.6",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.0",
@@ -20,6 +21,7 @@
     "hbs": "^4.0.0",
     "mysql": "^2.18.1",
     "path": "^0.12.7",
+    "request": "^2.88.2",
     "sha256": "^0.2.0"
   }
 }

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Login</title>
+        <title></title>
         <link rel="stylesheet" href="styles.css">
 
         <!-- Font Awesome -->
@@ -20,30 +20,36 @@
     </head>
 
     <body>
-        <section id="title">
+        <section id="title" class="theme">
             <div class="row" style="padding-top: 150px;">
                 <div class="col-lg-4 col-md-3 col-sm-1"></div>
                 <div class="col-lg-4 col-md-6 col-sm-10" style="text-align: center;">
-                    <h1 style="padding-bottom: 20px;">Login</h1>
+                    <h1 style="padding-bottom: 20px;">Bring a Thing</h1>
                     <form class="form-horizontal" action='/auth' method='post'>
                         <div class="row">        
-                            <label class="control-label col-lg-4" for="login-username"><h3>User id</h3></label>
+                            <label class="control-label col-lg-4"><h4>Start Location</h4></label>
                             <div class="col-lg-8">
-                                <input type="text" id="login-username" name="user" placeholder="" class="input-xlarge form-control" required>
+                                <input type="text" id="start-location" name="startLocation" placeholder="" class="input-xlarge form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding: 30px 0px 10px 0px">        
+                            <label class="control-label col-lg-4"><h4>End Location</h4></label>
+                            <div class="col-lg-8">
+                                <input type="text" id="start-location" name="endLocation" placeholder="" class="input-xlarge form-control" required>
                             </div>
                         </div>
                         
-                        <div class="row" style="padding: 30px 0px 10px 0px">        
-                            <label class="control-label col-lg-4" for="login-username"><h3>Password</h3></label>
+                        <div class="row" style="padding: 47px 0px 10px 0px">        
+                            <label class="control-label col-lg-4"><h3>To bring ?</h3></label>
                             <div class="col-lg-8">
-                                <input type="text" id="login-username" name="pass" placeholder="" class="input-xlarge form-control" required>
+                                <input type="text" id="thing-to-bring" name="toBring" placeholder="" class="input-xlarge form-control" required>
                             </div>
                         </div>
                         <div class="container" style="padding: 20px 0px">
                             <input type="submit" name="submit" class="btn btn-success btn-lg">
                         </div>
                     </form>
-                    <a href='/forgot_password' style="color: green;">Forgot password</a>
                 </div>  
                 <div class="col-lg-4 col-md-3 col-sm-1"></div>
             </div>
