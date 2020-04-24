@@ -4,7 +4,6 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const ejs = require('ejs');
-const geocode  = require('./geocode/geocode');
 const sha256 = require('sha256');
 const fs = require('fs');
 const getArray = require('./utils/readasArray')
@@ -31,6 +30,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public/images'));
 app.use(express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public/script'));
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
@@ -98,7 +98,6 @@ app.post('/auth',(req,res) => {
 
                 console.log('Connection Established');
                 let query_prc = `select * from accounts where username="${username}" and passord="${password}"`;
-                console.log(query_prc);
                 connection.query(query_prc,(err,results,fields) => {
                     console.log(results);
                     if(err) {
@@ -233,13 +232,42 @@ app.get('/booking', (req,res) => {
     });
 })
 app.post('/booking', (req,res) => {
-    console.log('Entered booking');
+    console.log('Entered booking', req.body);
     var startLocation = req.body.startLocation;
     var endLocation = req.body.endLocation;
-    var interval = req.body.time;
-    var cities = getArray.read(__dirname + '/files/cities.txt')
-    if(cities.includes)
-    console.log(startLocation,endLocation,interval);
+    var startDate = new Date(String(req.body.startDate));
+    var endDate = new Date(String(req.body.endDate));
+    var connection = mysql.createConnection(database_auth);
+
+    var flag = true;
+    connection.connect((err) => {
+        if(err) {
+            console.log('Error:',err.message);
+            res.render(booking.ejs, {
+                error:'Server unreachable'
+            });
+        } else {
+            console.log('Connection established');
+            var query_prc = Array(`select * from stations where station="${startLocation}"`,
+                                `select * from stations where station="${endLocation}`);
+
+            query_prc.forEach((_query) => {
+                connection.query(_query, (err, result, fields) => {
+                    console.log(results);
+                    if(err) 
+                        res.render('booking.ejs', {
+                            error:'Server unreachable'
+                        });
+                    else if(result.length == 0)
+                            flag = false;
+                    }
+                });
+            }
+            query_prc = `select from stations`
+            query_prc = `insert into bookings values("${startLocation}", "${endLocation}", "${startDate}", "${endDate}")`;
+        });
+    });
+
 
 })
 
