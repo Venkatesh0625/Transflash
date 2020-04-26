@@ -5,29 +5,58 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title></title>
         <link rel="stylesheet" href="styles.css">
-
         <!-- Font Awesome -->
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
         <!-- Bootstrap -->
-
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        
         <!-- Google Fonts -->
-
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700,900|Ubuntu:400,500,700&display=swap" rel="stylesheet">
     </head>
-
     <body>
         <section id="title" class="theme">
             <div class="row" style="padding-top: 150px;">
                 <div class="col-lg-4 col-md-3 col-sm-1"></div>
                 <div class="col-lg-4 col-md-6 col-sm-10" style="text-align: center;">
-                    <% if(booked) { %>
-                        <%- include('partials/booking_page') %>
-                    <% } %>
-                </div>  
+                    <h1 style="padding-bottom: 20px;">Bring a Thing</h1>
+                    <form class="form-horizontal" id='booking-form' action='/booking' onsubmit="return validateBooking();" method='post'>
+                        <div class="row">
+                            <label class="control-label col-lg-4">
+                                <h4>Start Location</h4>
+                            </label>
+                            <div class="col-lg-8">
+                                <input type="text" id="start-location" name="startLocation" placeholder="" class="input-xlarge form-control" required>
+                            </div>
+                        </div>
+                        <div class="row" style="padding: 45px 0px 10px 0px">
+                            <label class="control-label col-lg-4">
+                                <h4>End Location</h4>
+                            </label>
+                            <div class="col-lg-8">
+                                <input type="text" id="end-location" name="endLocation" placeholder="" class="input-xlarge form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="padding: 45px 0px 10px 0px">
+                            <label for="start_date" class="control-label col-lg-4">
+                                <h4>Start Date</h4>
+                            </label>
+                            <div class="col-lg-8">
+                                <input class="form-control" type="date" id="start_date" name="startDate" required>
+                            </div>
+                        </div>
+                        <div class="form-group row" style="padding: 30px 0px 10px 0px">
+                            <label for="end_date" class="control-label col-lg-4">
+                                <h4>End Date</h4>
+                            </label>
+                            <div class="col-lg-8">
+                                <input class="form-control" type="date" id="end_date" name="endDate" required>
+                            </div>
+                        </div>
+                        <div class="container" style="padding: 20px 0px">
+                            <input type="submit" name="submit" class="btn btn-success btn-lg">
+                        </div>
+                    </form>
+                    <h4 style="color: red;"><%=error%></h4>
+                </div>
                 <div class="col-lg-4 col-md-3 col-sm-1"></div>
             </div>
         </section>
