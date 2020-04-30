@@ -1,6 +1,6 @@
 .theme {
-    background-image: linear-gradient(#639a67,#d8ebb5);
-    height: 1000px;
+    background-image: linear-gradient(#827397,#d8b9c3);
+    
 }
 
 h4,h3 {
@@ -21,3 +21,13 @@ h1 {
     border-radius: 22.5px;
 }
 
+.car {
+    width : 33%;
+    height : 270px;
+    text-align: center;
+};
+
+.booking {
+    border: 3px solid black;
+    padding: 20px 7px;
+}

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Signup</title>
-        <link rel="stylesheet" href="public/css/styles.css">
+        <link rel="stylesheet" href="styles.css">
 
         <!-- Bootstrap -->
 
@@ -21,11 +21,11 @@
                 
                 <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: center; align-self: center;">
                     <h1 style="margin-bottom: 60px;">Track Booking</h1>
-                    <!-- <% for(var i=0; i < data.length; i++) { %> -->
-                        <div style="border: 3px solid black; padding: 20px 7px 17px 7px">
+                    <% for(var i=0; i < data.length; i++) { %>
+                        <div style="border-radius: 5%; border: 3px solid black; padding: 20px 7px 17px 7px">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: left;">
-                                    <h5><strong> <%=data[i].from_station%> </strong> <em>to</em> <strong><%=data[i]%></strong></h5>
+                                    <h5><strong> <%=data[i].from_station%> </strong> <em>to</em> <strong><%=data[i].to_station%></strong></h5>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: right;">
                                     <h5>in <%=data[i].car_model%></h5>
@@ -40,7 +40,8 @@
 
                             </div>
                         </div>
-                    <!-- <% } %> -->
+                        <hr>
+                    <% } %>
                 </div>  
                 
             </div>

@@ -16,3 +16,4 @@ function validateBooking()
     }
     return true;
 }
+

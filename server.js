@@ -7,6 +7,7 @@ const schedule = require('node-schedule');
 const ejs = require('ejs');
 const sha256 = require('sha256');
 const fs = require('fs');
+const moment = require('moment');
 //const getArray = require('./utils/readasArray')
 /*
     Username: w7pcpfou2D
@@ -71,14 +72,15 @@ app.use(session({
     saveUninitialized: true
 }));
 
+
+
 app.get('/', (req, res) => {
-    console.log(req.headers);
     console.log('Entered /');
 	res.render('home.ejs',{
         user: 'Login',
         LoginOut: 'Signup',
         login_link: '/login',
-        error:'hello'
+        error:''
     });
 });
 
@@ -221,51 +223,64 @@ app.post('/signup',(req,res) => {
     
 });
 
+// app.get('/track_booking', (req, res) => {
+//     if(req.session.loggedin) {
+//         res.render('track_booking.ejs',{error: ''});
+//     } else {
+//         res.render('track_booking.ejs',{'user: 'Login',
+//         LoginOut: 'Signup',
+//         login_link: '/login',
+//         error:'Login before you track booking'});
+//     }
+// });
+
 app.get('/track_booking', (req, res) => {
     if(req.session.loggedin) {
-        res.render('track_booking.ejs',{error: ""});
-    } else {
-        redirect('/home');
-    }
-});
-
-app.post('/track_booking', (req, res) => {
-    var booking_id = req.body.booking_id;
-    var query_prc;
-    var connection = mysql.createConnection(database_auth)
-    connection.connect((err) => {
-        if(err) {
-            res.render('track_booking.ejs',{error:"Server unreacheable"});
-        } else {
-            query_prc = `select * from booking where booking_id = '${booking_id}' and username = '${req.session.username}`;
-            connection.query(query_prc, (err, result, fields) => {
-                if(err) {
-                    res.render('track_booking.ejs',{error:"Server unreacheable"});
-                } else if(results.length === 0) {
-                    res.render('track_booking.ejs', {error:'Booking is invalid or expired '})
-                } else {
-                    var data = result[0];
-                    query_prc = `select name from stations where station_id = '${data.from_station}'`;
-                    connection.query(query_prc, (err, result, fields) => {
-                        if(err) {
-                            res.render('track_booking.ejs',{error:"Server unreacheable"});
-                        } else {
-                            data.from_station = result.name;
-                            query_prc = `select name from stations where station_id = '${data.to_station}'`;
-                            connection.query(query_prc, (err, result, fields) => {
-                                if(err) {
-                                    res.render('track_booking.ejs',{error:"Server unreacheable"});
-                                } else {
-                                    data.to_station = result.name;
-                                    res.render('display_booking.ejs', data);
+        var query_prc;
+        var connection = mysql.createConnection(database_auth)
+        connection.connect((err) => {
+            if(err) {
+                res.render('track_booking.ejs',{error:"Server unreacheable"});
+            } else {
+                query_prc = `select booking.vehicle_id, car_model, from_station, to_station, start_time, end_time , number_plate from booking inner join vehicles on vehicles.vehicle_id = booking.vehicle_id inner join cars on cars.car_id = vehicles.car_id where username='${req.session.username}'`;
+                connection.query(query_prc, (err, result, fields) => {
+                    if(err) {
+                        res.render('track_booking.ejs',{error:"Server unreacheable"});
+                    } else if(result.length === 0) {
+                        res.render('track_booking.ejs', {error:'No booking still now'});
+                    } else {
+                        var data = result;
+                        query_prc = `select station_id, name from stations`;
+                        connection.query(query_prc, (err, result, fields) => {
+                            if(err) {
+                                res.render('track_booking.ejs',{error:"Server unreacheable"});
+                            } else {
+                                var stations = {};
+                                for(var i=0;i < result.length; i++) {
+                                    stations[result[i].station_id] = result[i].name;
                                 }
-                            });
-                        }
-                    });
-                }
-            });   
-        }
-    });
+                                console.log("in-here", stations);
+                                for(var i=0;i < data.length; i++) {
+                                    data[i].from_station = stations[data[i].from_station];
+                                    data[i].to_station = stations[data[i].to_station];
+                                    data[i].start_time = moment(String(data[i].start_time).slice(0,10)).format('ll');
+                                    data[i].end_time  = moment(String(data[i].end_time).slice(0,10)).format('ll');
+                                }
+                                res.render('show_booking.ejs',{data});
+                            }
+                        });
+                    }
+                });   
+            }
+        });
+    } else {
+        res.render('home.ejs',{
+            user: 'Login',
+            LoginOut: 'Signup',
+            login_link: '/login',
+            error:'Login to view booking details'
+        })
+    }
 });
 
 
@@ -310,6 +325,7 @@ app.get('/choose_car', (req, res) => {
 });
 
 app.post('/choose_car',(req, res) => {
+    console.log('Choose_car')
     console.log(req.session, req.body)
     if(true) {
         console.log('Entered cars ', req.session.booking);
@@ -337,7 +353,7 @@ app.post('/choose_car',(req, res) => {
                 connection.query(query_prc, (err, result, fields) => {
                     if(err) {
                         //res.render('choose_car.ejs',{error: "server unreacheable"});
-                        return res.send("serrver error2");
+                        return res.send("server error2");
                     } else {
                         for(i in result) {
                             
@@ -356,7 +372,7 @@ app.post('/choose_car',(req, res) => {
                         req.session.booking.booking_id = String(keys.booking_id);
                         keys.booking_id = keys.booking_id + 1;
                         fs.writeFileSync('keys.json', JSON.stringify(keys, undefined, 4));
-                        query_prc = `insert into booking values("${req.session.booking.booking_id}", "${req.session.booking.vehicle_id}", "${req.session.username}", "${req.session.booking.startStation_id}", "${req.session.booking.endStation_id}", "${req.session.booking.startDate}", "${req.session.booking.endDate}")`
+                        query_prc = `nsert into booking values("${req.session.booking.booking_id}", "${req.session.booking.vehicle_id}", "${req.session.username}", "${req.session.booking.startStation_id}", "${req.session.booking.endStation_id}", "${req.session.booking.startDate}", "${req.session.booking.endDate}")`
                         connection.query(query_prc, (err, result, fields) => {
                             if(err) {
                                 console.log(err);
@@ -469,4 +485,4 @@ app.post('/booking', (req,res) => {
 //     });
 
 // });
-app.listen(3000);
+app.listen(3001);
