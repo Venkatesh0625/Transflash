@@ -61,6 +61,7 @@ module.exports =  (req,res) => {
                                     res.render('choose_car.ejs', {data:result});
                                     //res.send(result);
                                     console.log(req.session);
+                                    console.log(result,"result mann");
                                 }
                             });
                         }

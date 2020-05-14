@@ -41,17 +41,17 @@ module.exports = (req, res) => {
         var endDate = req.session.booking.endDate;
         var database_auth = require('../public/config').database;
 
-        query_prc = `SELECT vehicle_id, car_id, number_plate FROM vehicles WHERE ( avail = "1" AND station_id = '${req.session.booking.start}' ) OR vehicle_id IN (SELECT vehicle_id FROM (SELECT *, Row_number() OVER ( partition BY vehicle_id ORDER BY end_time DESC) row_num FROM booking WHERE end_time < '${startDate}' AND vehicle_id NOT IN (SELECT vehicle_id FROM booking WHERE ( start_time <= '${endDate}' AND end_time >= '${endDate}' ) OR ( start_time <= '${startDate}' AND end_time >= '${startDate}' ))) AS tablet WHERE row_num = 1 AND to_station = '${req.session.booking.startLocation}' AND ( vehicle_id IN (SELECT vehicle_id FROM (SELECT *, Row_number() OVER ( partition BY vehicle_id ORDER BY start_time)row_num FROM booking WHERE start_time > '${endDate}') AS freq WHERE row_num = 1 AND from_station = '${req.session.booking.endLocation}' ) OR vehicle_id IN (SELECT table1.vehicle_id FROM (SELECT vehicle_id, Count(*) AS count FROM booking GROUP BY vehicle_id) AS table1, (SELECT vehicle_id, Count(*) AS count FROM booking WHERE end_time < '${startDate}' AND vehicle_id NOT IN (SELECT vehicle_id FROM booking WHERE ( start_time <= '${endDate}' AND end_time >= '${endDate}' ) OR ( start_time <= '${startDate}' AND end_time >= '${startDate}' )) GROUP BY vehicle_id) AS table2 WHERE table1.vehicle_id = table2.vehicle_id AND table1.count = table2.count) ))`;
+        query_prc = `SELECT vehicle_id, car_id, number_plate FROM vehicles WHERE ( avail = "1" AND station_id = '${req.session.booking.startLocation}' ) OR vehicle_id IN (SELECT vehicle_id FROM (SELECT *, Row_number() OVER ( partition BY vehicle_id ORDER BY end_time DESC) row_num FROM booking WHERE end_time < '${startDate}' AND vehicle_id NOT IN (SELECT vehicle_id FROM booking WHERE ( start_time <= '${endDate}' AND end_time >= '${endDate}' ) OR ( start_time <= '${startDate}' AND end_time >= '${startDate}' ))) AS tablet WHERE row_num = 1 AND to_station = '${req.session.booking.startLocation}' AND ( vehicle_id IN (SELECT vehicle_id FROM (SELECT *, Row_number() OVER ( partition BY vehicle_id ORDER BY start_time)row_num FROM booking WHERE start_time > '${endDate}') AS freq WHERE row_num = 1 AND from_station = '${req.session.booking.endLocation}' ) OR vehicle_id IN (SELECT table1.vehicle_id FROM (SELECT vehicle_id, Count(*) AS count FROM booking GROUP BY vehicle_id) AS table1, (SELECT vehicle_id, Count(*) AS count FROM booking WHERE end_time < '${startDate}' AND vehicle_id NOT IN (SELECT vehicle_id FROM booking WHERE ( start_time <= '${endDate}' AND end_time >= '${endDate}' ) OR ( start_time <= '${startDate}' AND end_time >= '${startDate}' )) GROUP BY vehicle_id) AS table2 WHERE table1.vehicle_id = table2.vehicle_id AND table1.count = table2.count) ))`;
         
-        var connection = mysql.createConnection(database_auth);
+        connection = mysql.createConnection(database_auth);
         var car_id;
 
-        connection.query(`select car_id from cars where car_model = 'Mahindra Verito'`, (err, result, fields) => {
+        connection.query(`select car_id from cars where car_model = '${req.body.car_model}`, (err, result, fields) => {
             if(err) {
-                //res.render('choose_car.ejs',{error: "server unreacheable"});
-                return res.send("server error1");
+                res.render('choose_car.ejs',{error: "server unreacheable"});
             } else {
                 car_id = result[0].car_id;
+                console.log('car_id', car_id);
                 connection.query(query_prc, (err, result, fields) => {
                     if(err) {
                         //res.render('choose_car.ejs',{error: "server unreacheable"});
@@ -75,16 +75,14 @@ module.exports = (req, res) => {
                         req.session.booking.booking_id = String(keys.booking_id);
                         keys.booking_id = keys.booking_id + 1;
                         fs.writeFileSync('keys.json', JSON.stringify(keys, undefined, 4));
-                        query_prc = `insert into booking values("${req.session.booking.booking_id}", "${req.session.booking.vehicle_id}", "${req.session.username}", "${req.session.booking.startLocation}", "${req.session.booking.endStation_id}", "${req.session.booking.startDate}", "${req.session.booking.endDate}")`
+                        query_prc = `insert into booking values("${req.session.booking.booking_id}", "${req.session.booking.vehicle_id}", "${req.session.username}", "${req.session.booking.startLocation}", "${req.session.booking.endLocation}", "${req.session.booking.startDate}", "${req.session.booking.endDate}")`
                         connection.query(query_prc, (err, result, fields) => {
                             if(err) {
                                 console.log(err);
                                 res.render('booking.ejs', {error: "server error"});
                             } else {
-                                res.send(`<h3>Booking Successful Track your order with the booking id : </h3>`) 
-                                setTimeout(() => {
-                                    //res.render('home.ejs',{error: "", login_link: "", LoginOut: "Logout", user: req.session.username});
-                                }, 2000);
+                                res.send(`<h3 style="align=center">Booking Successful Track your order with the booking id : ${req.session.booking.booking_id} <a href="/home">Back to Home</a></h3>`) 
+                                
 
                                 data = {
                                     username : req.session.username,

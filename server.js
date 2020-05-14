@@ -1,20 +1,10 @@
-const mysql = require('mysql');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const path = require('path');
-const schedule = require('node-schedule');
 const ejs = require('ejs');
-const sha256 = require('sha256');
-const fs = require('fs');
 
 
 const app = express();
-
-
-
-
-
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));

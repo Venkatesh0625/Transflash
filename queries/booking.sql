@@ -6,7 +6,7 @@ WHERE  ( avail = "1"
          AND station_id = '${startLocation}' ) 
         OR vehicle_id IN (SELECT vehicle_id 
                           FROM   (SELECT *, 
-                                         Row_number() 
+                                         Row_number()
                                            OVER ( 
                                              partition BY vehicle_id 
                                              ORDER BY end_time DESC) row_num 

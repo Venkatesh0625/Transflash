@@ -1,6 +1,10 @@
+.homeTheme {
+    background-image: linear-gradient(#827397,#d8b9c3);
+    height:1000px;
+}
+
 .theme {
     background-image: linear-gradient(#827397,#d8b9c3);
-    
 }
 
 h4,h3 {

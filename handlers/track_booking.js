@@ -36,7 +36,7 @@ module.exports =  (req, res) => {
                                     data[i].start_time = moment(String(data[i].start_time).slice(0,10)).format('ll');
                                     data[i].end_time  = moment(String(data[i].end_time).slice(0,10)).format('ll');
                                 }
-                                res.render('show_booking.ejs',{data});
+                                res.render('track_booking.ejs',{data});
                             }
                         });
                     }

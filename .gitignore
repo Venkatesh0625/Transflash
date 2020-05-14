@@ -1,14 +1,12 @@
 #node modules directorty
 node_modules/
 
-#node code practise 
-playground/
-
 #just for checking the html pages
 index.html
 
 #test db
-oracle_db.js 
+oracle_db.js
 
 #lock file
 package-lock.json
+
