@@ -8,5 +8,4 @@ index.html
 oracle_db.js
 
 #lock file
-package-lock.json
-
+yarn.lock
