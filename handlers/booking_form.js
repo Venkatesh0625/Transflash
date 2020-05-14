@@ -58,10 +58,7 @@ module.exports =  (req,res) => {
                                 } else if(result.length === 0) {
                                     res.send("No cars available");
                                 } else {
-                                    res.render('choose_car.ejs', {data:result});
-                                    //res.send(result);
-                                    console.log(req.session);
-                                    console.log(result,"result mann");
+                                    res.render('choose_car.ejs', {error: '',data:result});
                                 }
                             });
                         }

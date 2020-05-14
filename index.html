@@ -4,7 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Signup</title>
-        <link rel="stylesheet" href="public/css/styles.css">
+        <link rel="stylesheet" href="styles.css">
+
+        <!-- Font Awesome -->
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- Bootstrap -->
 
@@ -17,33 +21,18 @@
 
     <body>
         <section id="title" class="theme">
-            <div class="container" style="padding-top: 150px;">
-                
-                <div class="col-lg-12 col-md-12 col-sm-12" style="text-align: center; align-self: center;">
-                    <h1 style="margin-bottom: 60px;">Track Booking</h1>
-                    <!-- <% for(var i=0; i < data.length; i++) { %> -->
-                        <div style="border: 3px solid black; padding: 20px 7px 17px 7px">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: left;">
-                                    <h5><strong> <%=data[i].from_station%> </strong> <em>to</em> <strong><%=data[i]%></strong></h5>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: right;">
-                                    <h5>in <%=data[i].car_model%></h5>
-                                </div>
-                                
-                                <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: left;">
-                                    <h5>From <em><%=data[i].start_time%></em> to <em> <%=data[i].end_time%> </em> </h5>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6" style="text-align: right;">
-                                    <h5>Number Plate : <%=data[i].number_plate%></h5>
-                                </div>
-
-                            </div>
+            <h2 style="text-align: center; padding: 100px 0px">Choose your car from the available cars for your dates</h2>
+            <div class="container">
+                <div class="row">
+                    <% for(var i=0; i < data.length; i++) { %>
+                        <div class="car col-lg-4 col-md-6 col-sm-12">
+                            <img src="<%=data[i].src%>" alt="image" width="270" style="margin-bottom: 7px;" />
+                            <button class="btn" onclick="submit_car('<%=data[i].car_model%>')"><h4><%=data[i].car_model%></h4></button>
                         </div>
-                    <!-- <% } %> -->
-                </div>  
-                
+                    <% } %>
+                </div>
             </div>
         </section>
+        <script src="choose_car.js"></script>
     </body>
 </html>

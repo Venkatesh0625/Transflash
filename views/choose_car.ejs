@@ -27,11 +27,12 @@
                     <% for(var i=0; i < data.length; i++) { %>
                         <div class="car col-lg-4 col-md-6 col-sm-12">
                             <img src="<%=data[i].src%>" alt="image" width="270" style="margin-bottom: 7px;" />
-                            <button class="btn" onclick="submit_car('<%=data[i].car_model%>')"><h4><%=data[i].car_model%></h4></button>
+                            <button class="btn" onclick="submit_car('<%=data[i].car_model%>')"><h4><%=data[i].car_model%></h4><h3><%=data[i].count%></h3></button>
                         </div>
                     <% } %>
                 </div>
             </div>
+            <h4 style="color: red;"><%=error%></h4>
         </section>
         <script src="choose_car.js"></script>
     </body>
