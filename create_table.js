@@ -16,17 +16,19 @@ var connection = mysql.createConnection({
 
 var commands = Array('create table if not exists accounts ( name varchar(255) not null, username varchar(255) primary key, email varchar(100) not null, passord varchar(100) not null)'
 
-, 'create table if not exists agents ( name varchar(255) not null, agent_id varchar(10) primary key, email varchar(100) not null, contact varchar(10) not null)'
+, 'create table if not exists agents ( name varchar(255) not null, agent_id varchar(10) primary key,password varchar(255), contact varchar(10) not null)'
 
 , 'create table if not exists stations ( station_id varchar(10) primary key, name varchar(255) not null, contact varchar(10) not null, agent_id varchar(10) not null, foreign key (agent_id) references agents(agent_id))'
 
-, 'create table if not exists cars ( car_id varchar(10) primary key, car_model varchar(100) not null, url varchar(255))'
+, 'create table if not exists cars ( car_id varchar(10) primary key, car_model varchar(100) not null, url varchar(255), amount int)'
 
 , 'create table if not exists vehicles ( vehicle_id varchar(10) primary key, car_id varchar(10) not null, station_id varchar(10) not null, number_plate varchar(20) not null, avail varchar(2) not null , foreign key (car_id) references cars(car_id), foreign key (station_id) references stations(station_id))'
 
 , 'create table if not exists booking ( booking_id varchar(10) primary key, vehicle_id varchar(10) not null, username varchar(255), from_station varchar(10) not null, to_station varchar(10) not null, start_time date not null, end_time date, foreign key (username) references accounts(username), foreign key (from_station) references stations(station_id), foreign key (to_station) references stations(station_id), foreign key (vehicle_id) references vehicles(vehicle_id))'
 
 , 'create table if not exists rides ( username varchar(255) not null,booking_id varchar(10) not null, vehicle_id varchar(10) not null, from_station varchar(10) not null, to_station varchar(10) not null, start_time date , end_time date , foreign key (username) references accounts(username), foreign key (from_station) references stations(station_id), foreign key (to_station) references stations(station_id),  foreign key (vehicle_id) references vehicles(vehicle_id), foreign key (booking_id) references booking(booking_id))'
+
+, 'create table if not exists admin (username varchar(255) primary key, password varchar(255) not null)'
 );
 
 var startDate = "2020-05-04";
@@ -138,6 +140,9 @@ FROM   cars,
 AS table4 
 WHERE  cars.car_id = table4.car_id 
 GROUP  BY table4.car_id `]
+
+commands = [`update agents set password='d4f0bc5a29de06b510f9aa428f1eedba926012b591fef7a518e776a7c9bd1824'`] 
+
 connection.connect((err) => {
     if(err) {
         return console.error('Error:',err.message);
@@ -151,7 +156,7 @@ connection.connect((err) => {
             if(err) {
                 console.log(err.message);
             }
-            console.log(results);
+            console.log(results, fields);
         });
     });
 
