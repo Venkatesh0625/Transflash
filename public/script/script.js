@@ -1,3 +1,0 @@
-if(user) {
-    alert(error);
-}

@@ -141,7 +141,7 @@ AS table4
 WHERE  cars.car_id = table4.car_id 
 GROUP  BY table4.car_id `]
 
-commands = [`update agents set password='d4f0bc5a29de06b510f9aa428f1eedba926012b591fef7a518e776a7c9bd1824'`] 
+commands = [`select * from vehicles`];
 
 connection.connect((err) => {
     if(err) {

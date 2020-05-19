@@ -13,7 +13,7 @@ app.use(express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public/script'));
 
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 
 app.use(session({
     secret:'o856y4h7h46y7',
@@ -27,6 +27,8 @@ app.get('/', require('./handlers'));
 
 app.get('/home',require('./handlers/home'));
 
+app.get('/admin',require('./handlers/admin'));
+
 app.get('/login', require('./handlers/login'));
 
 app.get('/signup', require('./handlers/signup'));
@@ -37,11 +39,20 @@ app.post('/signup',require('./handlers/signup_form'));
 
 app.get('/booking',require('./handlers/booking'));
 
+app.post('/add_car', require('./handlers/addCar'));
+
+app.get('/admin_login', require('./handlers/adminLogin'));
+
+app.post('/admin_auth', require('./handlers/adminLogin-form'));
+
 app.get('/track_booking',require('./handlers/track_booking'));
 
 app.post('/booking', require('./handlers/booking_form'));
 
 app.post('/choose_car', require('./handlers/choose_car'));
 
+app.post('/add_agent', require('./handlers/addAgent'));
+
+app.post('/add_vehicle', require('./handlers/addVehicle'));
 
 app.listen(3000);
