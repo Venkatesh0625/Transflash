@@ -5,6 +5,7 @@ const ejs = require('ejs');
 
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -67,4 +68,6 @@ app.get('/add_vehicle', require('./controllers/addVehicle'));
 
 app.post('/agent_login', require('./controllers/agentLoginform'));
 
-app.listen(3000);
+app.listen(port, () => {
+    console.log('App is up on port',port);
+});
