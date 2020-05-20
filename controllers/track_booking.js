@@ -49,6 +49,6 @@ module.exports =  (req, res) => {
             LoginOut: 'Signup',
             login_link: '/login',
             error:'Login to view booking details'
-        })
+        });
     }
 }

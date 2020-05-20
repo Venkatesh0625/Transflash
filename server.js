@@ -23,36 +23,48 @@ app.use(session({
 
 
 
-app.get('/', require('./handlers'));
+app.get('/', require('./controllers'));
 
-app.get('/home',require('./handlers/home'));
+app.get('/home',require('./controllers/home'));
 
-app.get('/admin',require('./handlers/admin'));
+app.get('/admin',require('./controllers/admin'));
 
-app.get('/login', require('./handlers/login'));
+app.get('/agent', require('./controllers/agent'));
 
-app.get('/signup', require('./handlers/signup'));
+app.get('/login', require('./controllers/login'));
 
-app.post('/auth', require('./handlers/login_form'));
+app.get('/signup', require('./controllers/signup'));
 
-app.post('/signup',require('./handlers/signup_form'));
+app.post('/auth', require('./controllers/login_form'));
 
-app.get('/booking',require('./handlers/booking'));
+app.post('/signup',require('./controllers/signup_form'));
 
-app.post('/add_car', require('./handlers/addCar'));
+app.get('/booking',require('./controllers/booking'));
 
-app.get('/admin_login', require('./handlers/adminLogin'));
+app.get('/add_car', require('./controllers/addCar'));
 
-app.post('/admin_auth', require('./handlers/adminLogin-form'));
+app.post('/add_car', require('./controllers/addCarform'));
 
-app.get('/track_booking',require('./handlers/track_booking'));
+app.get('/admin_login', require('./controllers/adminLogin'));
 
-app.post('/booking', require('./handlers/booking_form'));
+app.post('/admin_auth', require('./controllers/adminLoginform'));
 
-app.post('/choose_car', require('./handlers/choose_car'));
+app.get('/agent_login', require('./controllers/agentLogin'));
 
-app.post('/add_agent', require('./handlers/addAgent'));
+app.get('/track_booking',require('./controllers/track_booking'));
 
-app.post('/add_vehicle', require('./handlers/addVehicle'));
+app.post('/booking', require('./controllers/booking_form'));
+
+app.post('/choose_car', require('./controllers/choose_car'));
+
+app.post('/add_agent', require('./controllers/addAgentform'));
+
+app.get('/add_agent', require('./controllers/addAgent'));
+
+app.post('/add_vehicle', require('./controllers/addVehicleform'));
+
+app.get('/add_vehicle', require('./controllers/addVehicle'));
+
+app.post('/agent_login', require('./controllers/agentLoginform'));
 
 app.listen(3000);

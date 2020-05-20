@@ -17,48 +17,43 @@ module.exports = (req, res) => {
     console.log('f');
     connection.connect((err) => {
         if(err) {
-            res.send('Cant connect');
-            //res.render('addVehicle.ejs',{ error:'Server Unreachable' });
-        } else {
-            query = `select * from cars where car_id = ${car_id}`;
+            res.render('addVehicle.ejs',{ error:'Server Unreachable' });
+        } else {``
+            query = `select * from cars where car_id = '${car_id}'`;
             connection.query(query, (err, rows, fields)=> {
                 if(err) {
-                    res.send('server error');
-                    //res.render('addVehicle.ejs', { error: 'Server error'});
+                    res.render('addVehicle.ejs', { error: 'Server error1'});
                     return;
                 } else if(rows[0]) {
-                    query = `select * from stations where station_id = ${station_id}`;
+                    query = `select * from stations where station_id = '${station_id}'`;
                     connection.query(query, (err, rows, fields)=> {
                         if(err) {
-                            res.send('server error2')
-                            //res.render('addVehicle.ejs', { error: 'Server error'});
+                            console.log(err);
+                            res.render('addVehicle.ejs', { error: 'Server error2'});
                             return;
                         } else if(rows[0]) {
                             query = `insert into vehicles values ('${vehicle_id}','${car_id}','${station_id}','${number_plate}','1')`;
                             connection.query(query, (err, rows, fields) => {
                                 if(err) {
-                                    res.send('server error3');
-                                    //res.render('addVehicle.ejs', { error: 'Server error'});
+                                    res.render('addVehicle.ejs', { error: 'Server error3'});
                                     return;
                                 } else {
-                                    res.send(`suceess+${rows}`);
-                                    //res.render('agentHome.ejs', {
-                                    //     user: 'Admin',
-                                    //     error: ''
-                                    // });
+                                    console.log(rows);
+                                    res.render('agentHome.ejs', {
+                                        user: 'Admin',
+                                        error: ''
+                                    });
                                 }
                             })
                         } else {
-                            res.send('error4');
-                            //res.render('addVehicle.ejs', { error: 'Station doesnt exist' });
+                            res.render('addVehicle.ejs', { error: 'Station doesnt exist' });
                             return;
                         }
                     });
                 } else {
-                    res.send('error5');
-                    //res.render('addVehicle.ejs', { error: 'Car doesnt exist' });
+                    res.render('addVehicle.ejs', { error: 'Car doesnt exist' });
                 }
             });
-        }
+        }       
     });
 }

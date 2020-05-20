@@ -9,7 +9,7 @@ FROM   cars,
  WHERE  ( avail = "1" 
           AND station_id = '${startLocation}' ) 
          OR vehicle_id IN (SELECT vehicle_id 
-                           FROM   (SELECT *, 
+                           FROM   (SELECT *,  
                                           Row_number() 
                                             OVER ( 
                                               partition BY vehicle_id 

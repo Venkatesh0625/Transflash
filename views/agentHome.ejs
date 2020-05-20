@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Tranflash</title>
+        <title>Tranflash Agent</title>
         <link rel="stylesheet" href="styles.css">
 
         <!-- Font Awesome -->
@@ -44,11 +44,12 @@
                                 <a class="nav-link"><h4>About</h4></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="loginLink" href="/adminlogin"><h4><%=user%></h4></a>
+                                <a class="nav-link" id="loginLink" href="/agent_login"><h4><%=user%></h4></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/signup"><h4><%=LoginOut%></h4></a>
+                                <a class="nav-link" id="loginLink" href=""><h4>Current rides</h4></a>
                             </li>
+                            
                         
                         </ul>
                     </div>
@@ -56,21 +57,14 @@
                 <div class="row" style="padding-bottom: 5%; text-align: center;">
                     <div class="col-lg-3 col-md-3 col-sm-3"></div>
                     <div class="col-lg-6 col-md-6 col-sm-6">
-                        <h1>Welcome Admin 💚 !</h1>
+                        <h1>Welcome Agent 💚 !</h1>
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-3"></div>
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-3 col-sm-1"></div>
                     <div class="col-lg-4 col-md-6 col-sm-10">
-                        <button class="btn btn-primary btn-lg btn-block" onclick="window.location.href='/add_car';" style="background-color:#2b580c; height: 70px;"><h3 class="start-btn">Add a car </h3></button>
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-sm-1"></div>
-                </div>
-                <div class="row" style="margin-top: 30px;">
-                    <div class="col-lg-4 col-md-3 col-sm-1"></div>
-                    <div class="col-lg-4 col-md-6 col-sm-10">
-                        <button class="btn btn-primary btn-lg btn-block" onclick="window.location.href='/add_agent';" style="background-color:#2b580c; height: 70px;"><h3 class="start-btn">Add an Agent</h3></button>
+                        <button class="btn btn-primary btn-lg btn-block" onclick="window.location.href='/add_vehicle';" style="background-color:#2b580c; height: 70px;"><h3 class="start-btn">Add a car </h3></button>
                     </div>
                     <div class="col-lg-4 col-md-3 col-sm-1"></div>
                 </div>

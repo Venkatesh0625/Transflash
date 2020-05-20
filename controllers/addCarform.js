@@ -3,10 +3,7 @@ const mysql = require('mysql');
 module.exports = (req, res) => {
     console.log('addcars');
     console.log(req.body);
-    var car_id = req.body.car_id,
-        car_model = req.body.car_model,
-        url = req.body.url,
-        amount = req.body.amount;
+    var { car_id, car_model, url, amount } = req.body;
     
     var query_prc = `insert into cars values ('${car_id}','${car_model}','${url}',${amount})`
 

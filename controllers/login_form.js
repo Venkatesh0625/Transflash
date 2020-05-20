@@ -12,6 +12,7 @@ module.exports = (req,res) => {
     connection.connect((err) => {
         if(err) {
             res.render('login.ejs',{
+                post_link: '/auth',
                 error:'Server Unreachable'
             });
         } else {
@@ -23,6 +24,7 @@ module.exports = (req,res) => {
                 if(err) {
                     console.log('error');
                     res.render('login.ejs',{
+                        post_link: '/auth',
                         error:'Server error'
                     });
                 } else if(results.length > 0) {
@@ -30,7 +32,10 @@ module.exports = (req,res) => {
                     req.session.username = username;
                     res.redirect('/home');
                 } else {
-                    res.render('login.ejs',{error:'Server Unreachable'});
+                    res.render('login.ejs',{
+                        post_link:'/auth',
+                        error:'No such user'
+                    });
                 }
             });
         

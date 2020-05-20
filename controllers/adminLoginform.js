@@ -12,7 +12,8 @@ module.exports = (req,res) => {
     console.log("Admin login");
     connection.connect((err) => {
         if(err) {
-            res.render('adminLogin.ejs',{
+            res.render('login.ejs',{
+                post_link:'/admin_login',
                 error:'Server Unreachable'
             });
         } else {
@@ -23,7 +24,8 @@ module.exports = (req,res) => {
                 console.log(results);
                 if(err) {
                     console.log('error');
-                    res.render('adminLogin.ejs',{
+                    res.render('login.ejs',{
+                        post_link:'/admin_login',
                         error:'Server error'
                     });
                 } else if(results.length > 0) {
@@ -31,7 +33,9 @@ module.exports = (req,res) => {
                     
                     res.redirect('/admin');
                 } else {
-                    res.render('adminLogin.ejs',{error:'Server Unreachable'});
+                    res.render('login.ejs',{
+                        post_link:'/admin_link',
+                        error:'Server Unreachable'});
                 }
             });
         

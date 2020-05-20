@@ -9,3 +9,6 @@ oracle_db.js
 
 #lock file
 yarn.lock
+
+#database
+database/
